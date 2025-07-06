@@ -4,9 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Statamic\Facades\Search;
-use Statamic\Search\Result;
 use Symfony\Component\Console\Helper\Table;
-use Meilisearch\Exceptions\CommunicationException;
 
 class SearchDocsCommand extends Command
 {
@@ -52,6 +50,7 @@ class SearchDocsCommand extends Command
 
             if ($results->isEmpty()) {
                 $this->warn('No results found.');
+
                 return Command::SUCCESS;
             }
 
@@ -72,9 +71,10 @@ class SearchDocsCommand extends Command
         } catch (\Meilisearch\Exceptions\CommunicationException $e) {
             $this->error('Meilisearch is not available. Make sure Meilisearch is running or set SEARCH_DRIVER=local in your .env file.');
             $this->comment('You can start Meilisearch with: meilisearch --http-addr 127.0.0.1:7700');
+
             return Command::FAILURE;
         } catch (\Exception $e) {
-            $this->error('Search failed: ' . $e->getMessage());
+            $this->error('Search failed: '.$e->getMessage());
 
             // Check if we're using the local driver
             if (config('statamic.search.driver') === 'local') {
@@ -107,15 +107,16 @@ class SearchDocsCommand extends Command
             $snippet = $this->getSnippet($content, 80);
 
             $rows[] = [
+                $entry->id(),
                 $title,
                 $collection,
                 $snippet,
-                $url
+                $url,
             ];
         }
 
         $table = new Table($this->output);
-        $table->setHeaders(['Title', 'Collection', 'Snippet', 'URL']);
+        $table->setHeaders(['ID', 'Title', 'Collection', 'Snippet', 'URL']);
         $table->setRows($rows);
         $table->setStyle('box');
         $table->render();
@@ -148,7 +149,7 @@ class SearchDocsCommand extends Command
         $this->line(json_encode([
             'query' => $this->argument('query'),
             'count' => count($data),
-            'results' => $data
+            'results' => $data,
         ], JSON_PRETTY_PRINT));
     }
 
@@ -163,6 +164,6 @@ class SearchDocsCommand extends Command
             return $text;
         }
 
-        return substr($text, 0, $length) . '...';
+        return substr($text, 0, $length).'...';
     }
 }

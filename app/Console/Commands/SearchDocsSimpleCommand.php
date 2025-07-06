@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Statamic\Facades\Entry;
 use Illuminate\Support\Str;
+use Statamic\Facades\Entry;
 use Symfony\Component\Console\Helper\Table;
 
 class SearchDocsSimpleCommand extends Command
@@ -111,6 +111,7 @@ class SearchDocsSimpleCommand extends Command
 
         if ($results->isEmpty()) {
             $this->warn('No results found.');
+
             return Command::SUCCESS;
         }
 
@@ -142,7 +143,7 @@ class SearchDocsSimpleCommand extends Command
 
             // Get a snippet of content or intro
             $snippet = $entry->get('intro', '');
-            if (!$snippet) {
+            if (! $snippet) {
                 $content = strip_tags($entry->get('content', ''));
                 $snippet = $this->getSnippet($content, 240);
             } else {
@@ -150,15 +151,16 @@ class SearchDocsSimpleCommand extends Command
             }
 
             $rows[] = [
+                $entry->id(),
                 $title,
                 $collection,
                 $snippet,
-                $url
+                $url,
             ];
         }
 
         $table = new Table($this->output);
-        $table->setHeaders(['Title', 'Collection', 'Snippet', 'URL']);
+        $table->setHeaders(['ID', 'Title', 'Collection', 'Snippet', 'URL']);
         $table->setRows($rows);
         $table->setStyle('box');
         $table->render();
@@ -186,7 +188,7 @@ class SearchDocsSimpleCommand extends Command
         $this->line(json_encode([
             'query' => $this->argument('query'),
             'count' => count($data),
-            'results' => $data
+            'results' => $data,
         ], JSON_PRETTY_PRINT));
     }
 
@@ -201,6 +203,6 @@ class SearchDocsSimpleCommand extends Command
             return $text;
         }
 
-        return substr($text, 0, $length) . '...';
+        return substr($text, 0, $length).'...';
     }
 }
