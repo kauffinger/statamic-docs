@@ -8,6 +8,7 @@ use Statamic\Search\Result;
 class SearchableEntry
 {
     protected $entry;
+
     protected $documentReference;
 
     public function __construct(EntryContract $entry, string $documentReference)
@@ -19,6 +20,7 @@ class SearchableEntry
     public function toSearchResult(): Result
     {
         $result = new CustomSearchResult($this->entry, $this->documentReference);
+
         return $result;
     }
 

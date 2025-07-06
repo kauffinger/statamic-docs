@@ -2,8 +2,8 @@
 
 namespace App\Tags;
 
-use Statamic\Facades\Data;
 use Illuminate\Support\Str;
+use Statamic\Facades\Data;
 
 class GithubCommitsUrl extends \Statamic\Tags\Tags
 {
@@ -23,6 +23,6 @@ class GithubCommitsUrl extends \Statamic\Tags\Tags
 
         $path = Str::after($path = $content->path(), 'content/');
 
-        return $this->endpoint . $path;
+        return $this->endpoint.$path;
     }
 }

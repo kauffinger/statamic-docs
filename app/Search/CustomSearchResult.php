@@ -7,6 +7,7 @@ use Statamic\Search\Result;
 class CustomSearchResult extends Result
 {
     protected $documentReference;
+
     protected $entry;
 
     public function __construct($entry, $documentReference)

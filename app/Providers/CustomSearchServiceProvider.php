@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Search\CustomSearchProvider;
 use Illuminate\Support\ServiceProvider;
-use Statamic\Facades\Search;
 
 class CustomSearchServiceProvider extends ServiceProvider
 {
