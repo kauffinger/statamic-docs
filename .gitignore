@@ -21,3 +21,6 @@ yarn-error.log
 # When in dev...
 /public/**/.meta
 .antlers.json
+
+.idea
+public/build
